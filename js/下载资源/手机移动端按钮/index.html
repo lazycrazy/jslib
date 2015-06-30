@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="keywords" content="JS代码,其他代码,JS广告代码,JS特效代码" />
+<meta name="description" content="此代码内容为手机移动端各种按钮的代码，属于站长常用代码，更多其他代码代码请访问xw素材网JS代码频道。" />
+<title>web手机移动端各种表单按钮美化特效_xw素材网</title>
+<!--demo展示所用css，不用关心 begin-->
+<link rel="stylesheet" type="text/css" href="css/reset.css" />
+<link rel="stylesheet" href="css/widget/button/button_demo.css" />
+<!--demo展示所用css end-->
+<!--组件依赖css begin-->
+<link rel="stylesheet" type="text/css" href="css/widget/button/button.css" />
+<link rel="stylesheet" type="text/css" href="css/widget/button/button.default.css" />
+<link rel="stylesheet" type="text/css" href="css/icons.default.css" />
+<!--组件依赖css end-->
+<!--组件依赖js begin-->
+<script type="text/javascript" src="js/zepto.js"></script>
+<script type="text/javascript" src="js/mobileevent2pc.js"></script><!--此js为在PC端方便查看效果，用在手机上，可去掉此js-->
+<script type="text/javascript" src="js/zepto.extend.js"></script>
+<script type="text/javascript" src="js/zepto.highlight.js"></script>
+<script type="text/javascript" src="js/zepto.ui.js"></script>
+<script type="text/javascript" src="js/widget/button.js"></script>
+<script type="text/javascript" src="js/widget/button.input.js"></script>
+<!--组件依赖js end-->
+</head>
+<body>
+<!-- 代码 开始 -->
+<div class="section">
+    <div>
+        <a id="btn1">点击后不可用</a>
+        <a class="button" href="http://www.xwcms.net" target="_blank">a按钮</a>
+        <button class="button">button按钮</button>
+    </div>
+</div>
+<div class="section">
+    <div>
+        <input id="button11" data-icon="checkbox" type="checkbox" />
+        <label for="button11">复选按钮1</label>
+        <input id="button12"  data-icon="checkbox" type="checkbox" />
+        <label for="button12">复选按钮2</label>
+        <input id="button13" data-icon="radio" type="radio" name="radio1" />
+        <label for="button13">单选1</label>
+        <input id="button14"  data-icon="radio" type="radio" name="radio1" />
+        <label for="button14">单选2</label>
+        <input id="button15"  data-icon="radio" checked="checked" type="radio" name="radio1" />
+        <label for="button15">单选3</label>
+    </div>
+</div>
+<script>
+    $('.button').button();
+    $('#button11, #button12, #button13, #button14, #button15').button();
+	
+	$('#btn1').button({
+        click: function() {
+            this.disable();
+        }
+    });
+
+    $.ui.button({
+        label: '复选按钮1',
+        type: 'checkbox',
+        container: '#btsn_create'
+    });
+
+    $.ui.button({
+        label: '复选按钮2',
+        type: 'checkbox',
+        container: '#btsn_create'
+    });
+
+    $.ui.button({
+        type: 'radio',
+        label: '单选1',
+        attributes: {
+            name: 'test'
+        },
+        container: '#btsn_create'
+    });
+
+    $.ui.button({
+        type: 'radio',
+        label: '单选2',
+        selected: true,
+        attributes: {
+            name: 'test'
+        },
+        container: '#btsn_create'
+    });
+</script>
+<!-- 代码 结束 -->
+
+<div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';">
+<p><p>手机移动端各种按钮的代码，支持iOS，Android（暂不支持WP）等系统以webkit为内核的浏览器，建议在PC端用以webkit为内核的浏览器（如：Google Chrome）中缩小浏览器窗口宽度查看效果,PC端查看效果需要用鼠标按住导航拖动以模拟手机上手指拖动的效果。</p><p><br /></p><p>使用方法：</p><p>1.head区域引用样式文件reset.css，button.css，button_demo.css，button.default.css，icons.default.css</p><p>2.head区域引用JS文件zepto.js，zepto.extend.js，zepto.ui.js，zepto.highlight.js，button.js，button.input.js，mobileevent2pc.js</p><p>3.在你的文件中加入&lt;!-- 代码 开始 --&gt;&lt;!-- 代码 结束 --&gt;区域代码</p><p>4.本代码中两种导航效果均需引用所有CSS,JS文件，如需修改样式，可去掉default相关样式文件</p></p>
+<p style="margin:20px 0"></p>
+</div>
+</body>
+</html>

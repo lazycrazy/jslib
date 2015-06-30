@@ -1,0 +1,1386 @@
+下面是对Jquery几个经常用到的地方进行的增强。
+功能是参考百度七巧板JS框架来完成的。
+一、页面属性
+$.page.getHeight():获取页面高度
+$.page.getWidth():获取页面宽度
+$.page.createStyleSheet(options):在页面中创建样式表对象
+$.page.getScrollTop():获取纵向滚动量
+$.page.getScrollLeft():获取横向滚动量
+$.page.getViewHeight():获取页面视觉区域高度
+$.page.getViewWidth():获取页面视觉区域宽度
+$.page.getMousePosition(element):获得页面里的目前鼠标所在的坐标
+$.page.getPosition(element):获取目标元素相对于整个文档左上角的位置
+$.page.lazyLoadImage(options):延迟加载图片. 默认只加载可见高度以上的图片, 随着窗口滚动加载剩余图片.注意: 仅支持垂直方向.
+$.page.loadCssFile(path):动态在页面上加载一个外部css文件
+$.page.loadJsFile(path):动态在页面上加载一个外部js文件
+$.page.load(resources, options, ignoreAllLoaded):加载一组资源，支持多种格式资源的串/并行加载，支持每个文件有单独回调函数。
+
+二、浏览器判断
+$.browser.ie
+$.browser.firefox
+$.browser.chrome
+$.browser.isGecko
+$.browser.isWebkit
+$.browser.isStrict
+$.browser.opera
+$.browser.safari
+
+
+
+三、平台判断
+$.platform.isAndroid
+$.platform.isIpad
+$.platform.isIphone
+$.platform.isMacintosh
+$.platform.isWindows
+$.platform.isX11
+
+
+
+四、字符串处理
+$.string.decodeHTML(source):对目标字符串进行html解码
+$.string.encodeHTML(source):对目标字符串进行html编码
+$.string.stripTags(source):去掉字符串中的html标签
+$.string.escapeReg(source):将目标字符串中可能会影响正则表达式构造的字符串进行转义。
+$.string.trim(source):删除目标字符串两端的空白字符
+
+
+
+五、类型
+$.lang.guid():返回一个当前页面的唯一标识字符串。
+$.lang.isFunction(source):判断目标参数是否为function或Function实例
+$.lang.isElement(source):判断目标参数是否为Element对象
+$.lang.isArray(source):判断目标参数是否Array对象
+
+
+
+六、数组
+$.array.indexOf(source, match, fromIndex):查询数组中指定元素的索引位置
+$.array.contains(source, obj):判断一个数组中是否包含给定元素
+$.array.empty(source):清空一个数组
+$.array.lastIndexOf(source, match, fromIndex):从后往前，查询数组中指定元素的索引位置
+$.array.map(source, iterator, thisObject):遍历数组中所有元素，将每一个元素应用方法进行转换，并返回转换后的新数组。
+$.array.reduce(source, iterator, initializer):遍历数组中所有元素，将每一个元素应用方法进行合并，并返回合并后的结果。
+$.array.remove(source, match):移除数组中的项
+$.array.removeAt(source, index):移除数组中的项
+$.array.unique(source, compareFn):过滤数组中的相同项。如果两个元素相同，会删除后一个元素。
+
+
+
+七、cookie
+$.cookie.getRaw(key):获取cookie的值，不对值进行解码
+$.cookie.setRaw(key, value, options):设置cookie的值，不对值进行编码
+$.cookie.remove(key, options):删除cookie的值
+$.cookie.get(key):获取cookie的值，用decodeURIComponent进行解码
+$.cookie.set(key, value, options):设置cookie的值，用encodeURIComponent进行编码
+
+
+
+八、整数
+$.number.comma(source, length):为目标数字添加逗号分隔
+$.number.randomInt(min, max):生成随机整数，范围是[min, max]
+$.number.pad(source, length):对目标数字进行0补齐处理
+
+
+
+九、日志
+$.sio.log(url):通过请求一个图片的方式令服务器存储一条日志,常用于记录用户点击位置，进行分析统计
+
+
+
+十、URL
+$.url.escapeSymbol(source):对字符串进行%#&+=以及和\s匹配的所有字符进行url转义
+$.url.getQueryValue(url, key):根据参数名从目标URL中获取参数值
+$.url.jsonToQuery(json, replacer_opt):将json对象解析成query字符串
+$.url.queryToJson(url):解析目标URL中的参数成json对象
+
+插件源码：
+[javascript] view plaincopy
+;(function($){  
+    $.extend({  
+        hasClass:function(targetClassName){  
+            var className = $(this).attr("class");  
+            var classArray = className.split(" ");  
+            if(className && classArray.length == 0){  
+                if(targetClassName == className) return true;  
+            }else if(className && classArray.length > 0){  
+                for(var i=0; i<=classArray.length-1; i++){  
+                    if(classArray[i] == targetClassName) return true;  
+                }  
+            }  
+  
+            return false;  
+        },  
+          
+        getDocument:function (element) {  
+            return $.lang.isElement(element) ? element : element.ownerDocument || element.document;  
+        }  
+    });  
+})(jQuery);  
+  
+;(function($){  
+    $.lang = $.lang || {};  
+      
+    $.lang.isFunction = function (source) {  
+        // chrome下,'function' == typeof /a/ 为true.  
+        return '[object Function]' == Object.prototype.toString.call(source);  
+    };  
+      
+    $.lang.isString = function (source) {  
+        return '[object String]' == Object.prototype.toString.call(source);  
+    };  
+})(jQuery);  
+  
+;(function($){  
+      
+    $.page = $.page || {};  
+    $.page.xy = {x:0, y:0};//当前鼠标坐标  
+  
+    $.page.getHeight = $.page.getHeight || function(){  
+        var doc = document,  
+        body = doc.body,  
+        html = doc.documentElement,  
+        client = doc.compatMode == 'BackCompat' ? body : doc.documentElement;  
+  
+        return Math.max(html.scrollHeight, body.scrollHeight, client.clientHeight);  
+    };  
+  
+    $.page.getWidth  = $.page.getWidth || function () {  
+        var doc = document,  
+        body = doc.body,  
+        html = doc.documentElement,  
+        client = doc.compatMode == 'BackCompat' ? body : doc.documentElement;  
+  
+        return Math.max(html.scrollWidth, body.scrollWidth, client.clientWidth);  
+    };  
+  
+    $.page.createStyleSheet = $.page.createStyleSheet || function(options){  
+        var op = options || {},  
+            doc = op.document || document,  
+            s;  
+  
+        if ($.browser.ie) {  
+            //修复ie下会请求一个undefined的bug  berg 2010/08/27   
+            if(!op.url)  
+                op.url = "";  
+            return doc.createStyleSheet(op.url, op.index);  
+        } else {  
+            s = "<style type='text/css'></style>";  
+            op.url && (s="<link type='text/css' rel='stylesheet' href='"+op.url+"'/>");  
+            $("HEAD:eq(0)").after(s);  
+        }  
+    };  
+  
+    $.page.getScrollTop =  $.page.getScrollTop || function(){  
+        var d = document;  
+        return window.pageYOffset || d.documentElement.scrollTop || d.body.scrollTop;  
+    };  
+  
+    $.page.getScrollLeft= $.page.getScrollLeft || function () {  
+        var d = document;  
+        return window.pageXOffset || d.documentElement.scrollLeft || d.body.scrollLeft;  
+    };  
+  
+    $.page.getViewHeight = $.page.getViewHeight || function () {  
+        var doc = document,  
+            client = doc.compatMode == 'BackCompat' ? doc.body : doc.documentElement;  
+  
+        return client.clientHeight;  
+    };  
+  
+    $.page.getViewWidth = function () {  
+        var doc = document,  
+            client = doc.compatMode == 'BackCompat' ? doc.body : doc.documentElement;  
+  
+        return client.clientWidth;  
+    };  
+      
+    $(document).bind("mousemove", function(e){  
+        e = window.event || e;  
+        $.page.xy.x = e.clientX;  
+        $.page.xy.y = e.clientY;  
+        //console.log(e.clientX+","+e.clientY);  
+    });  
+  
+    $.page.getMousePosition = $.page.getMousePosition || function(){  
+        return {  
+            x : $.page.getScrollLeft() + $.page.xy.x,  
+            y : $.page.getScrollTop() + $.page.xy.y  
+        };  
+    };  
+  
+    /** 
+     * 获取目标元素相对于整个文档左上角的位置 
+     * @grammar $.dom.getPosition(element) 
+     * @param {HTMLElement|string} element 目标元素或目标元素的id 
+     *              
+     * @returns {Object} 目标元素的位置，键值为top和left的Object。 
+     */  
+    $.page.getPosition = function (element) {  
+        var doc = $.getDocument(element),  
+            browser = $.browser  
+        // Gecko 1.9版本以下用getBoxObjectFor计算位置  
+        // 但是某些情况下是有bug的  
+        // 对于这些有bug的情况  
+        // 使用递归查找的方式  
+            BUGGY_GECKO_BOX_OBJECT = browser.isGecko > 0 &&   
+                                     doc.getBoxObjectFor &&  
+                                     $(element).css('position') == 'absolute' &&  
+                                     (element.style.top === '' || element.style.left === ''),  
+            pos = {"left":0,"top":0},  
+            viewport = (browser.ie && !browser.isStrict) ? doc.body : doc.documentElement,  
+            parent;  
+        var box;  
+          
+        if(element == viewport){  
+            return pos;  
+        }  
+  
+        if(element.getBoundingClientRect){ // IE and Gecko 1.9+  
+            //当HTML或者BODY有border width时, 原生的getBoundingClientRect返回值是不符合预期的  
+            //考虑到通常情况下 HTML和BODY的border只会设成0px,所以忽略该问题.  
+            doc = document;  
+            box = element.getBoundingClientRect();  
+  
+            pos.left = Math.floor(box.left) + Math.max(doc.documentElement.scrollLeft, doc.body.scrollLeft);  
+            pos.top  = Math.floor(box.top)  + Math.max(doc.documentElement.scrollTop,  doc.body.scrollTop);  
+              
+            // IE会给HTML元素添加一个border，默认是medium（2px）  
+            // 但是在IE 6 7 的怪异模式下，可以被html { border: 0; } 这条css规则覆盖  
+            // 在IE7的标准模式下，border永远是2px，这个值通过clientLeft 和 clientTop取得  
+            // 但是。。。在IE 6 7的怪异模式，如果用户使用css覆盖了默认的medium  
+            // clientTop和clientLeft不会更新  
+            pos.left -= doc.documentElement.clientLeft;  
+            pos.top  -= doc.documentElement.clientTop;  
+              
+            var htmlDom = doc.body,  
+                // 在这里，不使用element.style.borderLeftWidth，只有computedStyle是可信的  
+                htmlBorderLeftWidth = parseInt($(htmlDom).css('borderLeftWidth')),  
+                htmlBorderTopWidth = parseInt($(htmlDom).css('borderTopWidth'));  
+            if(browser.ie && !browser.isStrict){  
+                pos.left -= isNaN(htmlBorderLeftWidth) ? 2 : htmlBorderLeftWidth;  
+                pos.top  -= isNaN(htmlBorderTopWidth) ? 2 : htmlBorderTopWidth;  
+            }  
+        /* 
+         * 因为firefox 3.6和4.0在特定页面下(场景待补充)都会出现1px偏移,所以暂时移除该逻辑分支 
+         * 如果 2.0版本时firefox仍存在问题,该逻辑分支将彻底移除. by rocy 2011-01-20 
+        } else if (doc.getBoxObjectFor && !BUGGY_GECKO_BOX_OBJECT){ // gecko 1.9- 
+ 
+            // 1.9以下的Gecko，会忽略ancestors的scroll值 
+            // https://bugzilla.mozilla.org/show_bug.cgi?id=328881 and 
+            // https://bugzilla.mozilla.org/show_bug.cgi?id=330619 
+ 
+            box = doc.getBoxObjectFor(element); 
+            var vpBox = doc.getBoxObjectFor(viewport); 
+            pos.left = box.screenX - vpBox.screenX; 
+            pos.top  = box.screenY - vpBox.screenY; 
+            */  
+        } else { // safari/opera/firefox  
+            parent = element;  
+  
+            do {  
+                pos.left += parent.offsetLeft;  
+                pos.top  += parent.offsetTop;  
+                // safari里面，如果遍历到了一个fixed的元素，后面的offset都不准了  
+                if (browser.isWebkit > 0 && $(parent).css('position') == 'fixed') {  
+                    pos.left += doc.body.scrollLeft;  
+                    pos.top  += doc.body.scrollTop;  
+                    break;  
+                }  
+                  
+                parent = parent.offsetParent;  
+            } while (parent && parent != element);  
+  
+            // 对body offsetTop的修正  
+            if(browser.opera > 0 || (browser.isWebkit > 0 && $(parent).css('position') == 'absolute')){  
+                pos.top  -= doc.body.offsetTop;  
+            }  
+  
+            // 计算除了body的scroll  
+            parent = element.offsetParent;  
+            while (parent && parent != doc.body) {  
+                pos.left -= parent.scrollLeft;  
+                // see https://bugs.opera.com/show_bug.cgi?id=249965  
+    //            if (!b.opera || parent.tagName != 'TR') {  
+                if (!browser.opera || parent.tagName != 'TR') {  
+                    pos.top -= parent.scrollTop;  
+                }  
+                parent = parent.offsetParent;  
+            }  
+        }  
+  
+        return pos;  
+    };  
+  
+    /** 
+     * 延迟加载图片. 默认只加载可见高度以上的图片, 随着窗口滚动加载剩余图片.注意: 仅支持垂直方向. 
+     * @grammar $.page.lazyLoadImage([options]) 
+     * @param {Object} options 
+     * @param {String} [options.className] 延迟加载的IMG的className,如果不传入该值将延迟加载所有IMG. 
+     * @param {Number} [options.preloadHeight] 预加载的高度, 可见窗口下该高度内的图片将被加载. 
+     * @param {String} [options.placeHolder] 占位图url. 
+     * @param {Function} [options.onlazyload] 延迟加载回调函数,在实际加载时触发. 
+     */  
+    $.page.lazyLoadImage = function(options) {  
+        options = options || {};  
+        options.preloadHeight = options.preloadHeight || 0;  
+  
+        $(document).ready(function() {  
+            var imgs = document.getElementsByTagName('IMG'),  
+                    targets = imgs,  
+                    len = imgs.length,  
+                    i = 0,  
+                    viewOffset = getLoadOffset(),  
+                    srcAttr = 'data-tangram-ori-src',  
+                    target;  
+            //避免循环中每次都判断className  
+            if (options.className) {  
+                targets = [];  
+                for (; i < len; ++i) {  
+                    if ($(imgs[i]).hasClass(options.className)) {  
+                        targets.push(imgs[i]);  
+                    }  
+                }  
+            }  
+            //计算需要加载图片的页面高度  
+            function getLoadOffset() {  
+                return $.page.getScrollTop() + $.page.getViewHeight() + options.preloadHeight;  
+            }  
+            //加载可视图片  
+            for (i = 0, len = targets.length; i < len; ++i) {  
+                target = targets[i];  
+                if ($.page.getPosition(target).top > viewOffset) {  
+                    target.setAttribute(srcAttr, target.src);  
+                    options.placeHolder ? target.src = options.placeHolder : target.removeAttribute('src');  
+                }  
+            }  
+            //处理延迟加载  
+            var loadNeeded = function() {  
+                var viewOffset = getLoadOffset(),  
+                    imgSrc,  
+                    finished = true,  
+                    i = 0,  
+                    len = targets.length;  
+                for (; i < len; ++i) {  
+                    target = targets[i];  
+                    imgSrc = target.getAttribute(srcAttr);  
+                    imgSrc && (finished = false);  
+                    if ($.page.getPosition(target).top < viewOffset && imgSrc) {  
+                        target.src = imgSrc;  
+                        target.removeAttribute(srcAttr);  
+                        $.lang.isFunction(options.onlazyload) && options.onlazyload(target);  
+                    }  
+                }  
+                //当全部图片都已经加载, 去掉事件监听  
+                finished && $(window).unbind('scroll', loadNeeded);  
+            };  
+  
+            $(window).bind('scroll', loadNeeded);  
+        });  
+    };  
+  
+    /** 
+     * 动态在页面上加载一个外部css文件 
+     * @grammar $.page.loadCssFile(path) 
+     * @param {string} path css文件路径 
+     */  
+    $.page.loadCssFile = function (path) {  
+        var element = document.createElement("link");  
+          
+        element.setAttribute("rel", "stylesheet");  
+        element.setAttribute("type", "text/css");  
+        element.setAttribute("href", path);  
+  
+        document.getElementsByTagName("head")[0].appendChild(element);          
+    };  
+  
+  
+    /** 
+     * 动态在页面上加载一个外部js文件 
+     * @grammar $.page.loadJsFile(path) 
+     * @param {string} path js文件路径 
+     */  
+    $.page.loadJsFile = function (path) {  
+        var element = document.createElement('script');  
+  
+        element.setAttribute('type', 'text/javascript');  
+        element.setAttribute('src', path);  
+        element.setAttribute('defer', 'defer');  
+  
+        document.getElementsByTagName("head")[0].appendChild(element);      
+    };  
+  
+    /** 
+     * 
+     * 加载一组资源，支持多种格式资源的串/并行加载，支持每个文件有单独回调函数。 
+     * 
+     * @name $.page.load 
+     * @function 
+     * @grammar $.page.load(resources[, options]) 
+     * 
+     * @param {Array} resources               资源描述数组，单个resource含如下属性. 
+     * @param {String} resources.url           链接地址. 
+     * @param {String} [resources.type]        取值["css","js","html"]，默认参考文件后缀. 
+     * @param {String} [resources.requestType] 取值["dom","ajax"]，默认js和css用dom标签，html用ajax. 
+     * @param {Function} resources.onload        当前resource加载完成的回调函数，若requestType为ajax，参数为xhr(可能失效)，responseText；若requestType为dom，无参数，执行时this为相应dom标签。. 
+     * 
+     * @param {Object} [options]               可选参数. 
+     * @param {Function} [options.onload]        资源全部加载完成的回调函数，无参数。. 
+     * @param {Boolean} [options.parallel]      是否并行加载，默认为false，串行。. 
+     * @param {Boolean} [ignoreAllLoaded]       全部加载之后不触发回调事件.主要用于内部实现. 
+     * 
+     * 
+     * @remark 
+     *  //串行实例 
+     *  baidu.page.load([ 
+     *      { url : "http://img.baidu.com/js/tangram-1.3.2.js" }, 
+     *      {url : "http://xxx.baidu.com/xpath/logicRequire.js", 
+     *          onload : fnOnRequireLoaded 
+     *      }, 
+     *      { url : "http://xxx.baidu.com/xpath/target.js" } 
+     *  ],{ 
+     *      onload : fnWhenTargetOK 
+     *  }); 
+     *  //并行实例 
+     *  baidu.page.load([ 
+     *      { 
+     *          url : "http://xxx.baidu.com/xpath/template.html", 
+     *          onload : fnExtractTemplate 
+     *      }, 
+     *      { url : "http://xxx.baidu.com/xpath/style.css"}, 
+     *      { 
+     *          url : "http://xxx.baidu.com/xpath/import.php?f=baidu.*", 
+     *          type : "js" 
+     *      }, 
+     *      { 
+     *          url : "http://xxx.baidu.com/xpath/target.js", 
+     *      }, 
+     *      { 
+     *          url : "http://xxx.baidu.com/xpath/jsonData.js", 
+     *          requestType : "ajax", 
+     *          onload : fnExtractData 
+     *      } 
+     *  ],{ 
+     *      parallel : true, 
+     *      onload : fnWhenEverythingIsOK 
+     * }); 
+     */  
+    $.page.load = function(resources, options, ignoreAllLoaded) {  
+        options = options || {};  
+        var self = $.page.load,  
+            cache = self._cache = self._cache || {},  
+            loadingCache = self._loadingCache = self._loadingCache || {},  
+            parallel = options.parallel;  
+  
+        function allLoadedChecker() {  
+            for (var i = 0, len = resources.length; i < len; ++i) {  
+                if (! cache[resources[i].url]) {  
+                    setTimeout(arguments.callee, 10);  
+                    return;  
+                }  
+            }  
+            options.onload();  
+        };  
+  
+        function loadByDom(res, callback) {  
+            var node, loaded, onready;  
+            switch (res.type.toLowerCase()) {  
+                case 'css' :  
+                    node = document.createElement('link');  
+                    node.setAttribute('rel', 'stylesheet');  
+                    node.setAttribute('type', 'text/css');  
+                    break;  
+                case 'js' :  
+                    node = document.createElement('script');  
+                    node.setAttribute('type', 'text/javascript');  
+                    node.setAttribute('charset', res.charset || self.charset);  
+                    break;  
+                case 'html' :  
+                    node = document.createElement('iframe');  
+                    node.frameBorder = 'none';  
+                    break;  
+                default :  
+                    return;  
+            }  
+  
+            // HTML,JS works on all browsers, CSS works only on IE.  
+            onready = function() {  
+                if (!loaded && (!this.readyState ||  
+                        this.readyState === 'loaded' ||  
+                        this.readyState === 'complete')) {  
+                    loaded = true;  
+                    // 防止内存泄露  
+                    $(node).unbind('load', onready);  
+                    $(node).unbind('readystatechange', onready);  
+                    //node.onload = node.onreadystatechange = null;  
+                    callback.call(window, node);  
+                }  
+            };  
+            $(node).bind('load', onready);  
+            $(node).bind('readystatechange', onready);  
+            //CSS has no onload event on firefox and webkit platform, so hack it.  
+            if (res.type == 'css') {  
+                (function() {  
+                    //避免重复加载  
+                    if (loaded) return;  
+                    try {  
+                        node.sheet.cssRule;  
+                    } catch (e) {  
+                        setTimeout(arguments.callee, 20);  
+                        return;  
+                    }  
+                    loaded = true;  
+                    callback.call(window, node);  
+                })();  
+            }  
+  
+            node.href = node.src = res.url;  
+            document.getElementsByTagName('head')[0].appendChild(node);  
+        }  
+  
+        //兼容第一个参数直接是资源地址.  
+        $.lang.isString(resources) && (resources = [{url: resources}]);  
+        //避免递归出错,添加容错.  
+        if (! (resources && resources.length)) return;  
+  
+        function loadResources(res) {  
+            var url = res.url,  
+                shouldContinue = !!parallel,  
+                cacheData,  
+                callback = function(textOrNode) {  
+                    //ajax存入responseText,dom存入节点,用于保证onload的正确执行.  
+                    cache[res.url] = textOrNode;  
+                    delete loadingCache[res.url];  
+  
+                    if ($.lang.isFunction(res.onload)) {  
+                        //若返回false, 则停止接下来的加载.  
+                        if (false === res.onload.call(window, textOrNode)) {  
+                            return;  
+                        }  
+                    }  
+                    //串行时递归执行  
+                    !parallel && self(resources.slice(1), options, true);  
+                    if ((! ignoreAllLoaded) && $.lang.isFunction(options.onload)) {  
+                        allLoadedChecker();  
+                    }  
+                };  
+            //默认用后缀名, 并防止后缀名大写  
+            res.type = res.type || url.replace(/^[^\?#]+\.(css|js|html)(\?|#| |$)[^\?#]*/i, '$1'); //[bugfix]修改xxx.js?v这种情况下取不到js的问题。   
+            //默认html格式用ajax请求,其他都使用dom标签方式请求.  
+            res.requestType = res.requestType || (res.type == 'html' ? 'ajax' : 'dom');  
+  
+            if (cacheData = cache[res.url]) {  
+                callback(cacheData);  
+                return shouldContinue;  
+            }  
+            if (!options.refresh && loadingCache[res.url]) {  
+                setTimeout(function() {loadResources(res);}, 10);  
+                return shouldContinue;  
+            }  
+            loadingCache[res.url] = true;  
+            if (res.requestType.toLowerCase() == 'dom') {  
+                loadByDom(res, callback);  
+            }else {//ajax  
+                $.getScript(res.url, function(responseText){  
+                    callback(responseText);  
+                });  
+            }  
+            //串行模式,通过callback方法执行后续  
+            return shouldContinue;  
+        };  
+  
+        $.each(resources, function(k, item){  
+            loadResources(item);  
+        });  
+    };  
+    //默认编码设置为UTF8  
+    $.page.load.charset = 'UTF8';  
+})(jQuery);  
+  
+;(function($){  
+    /** 
+     * 判断浏览器类型 
+     */  
+    $.browser = $.browser || {};  
+  
+    $.browser.ie = /msie (\d+\.\d+)/i.test(navigator.userAgent) ? (document.documentMode || + RegExp['\x241']) : undefined;  
+      
+    $.browser.firefox = /firefox\/(\d+\.\d+)/i.test(navigator.userAgent) ? + RegExp['\x241'] : undefined;  
+  
+    $.browser.chrome = /chrome\/(\d+\.\d+)/i.test(navigator.userAgent) ? + RegExp['\x241'] : undefined;  
+      
+    //判断是否为gecko内核  
+    $.browser.isGecko = /gecko/i.test(navigator.userAgent) && !/like gecko/i.test(navigator.userAgent);  
+      
+    //判断是否为webkit内核  
+    $.browser.isWebkit = /webkit/i.test(navigator.userAgent);  
+      
+    //判断是否严格标准的渲染模式  
+    $.browser.isStrict = document.compatMode == "CSS1Compat";  
+  
+    $.browser.opera = /opera(\/| )(\d+(\.\d+)?)(.+?(version\/(\d+(\.\d+)?)))?/i.test(navigator.userAgent) ?  + ( RegExp["\x246"] || RegExp["\x242"] ) : undefined;  
+  
+    (function(){  
+        var ua = navigator.userAgent;  
+        /** 
+         * 判断是否为safari浏览器, 支持ipad 
+         * @property safari safari版本号 
+         * @grammar $.browser.safari 
+         */  
+        $.browser.safari = /(\d+\.\d)?(?:\.\d)?\s+safari\/?(\d+\.\d+)?/i.test(ua) && !/chrome/i.test(ua) ? + (RegExp['\x241'] || RegExp['\x242']) : undefined;  
+    })();  
+})(jQuery);  
+  
+  
+;(function($){  
+    /** 
+     * 判断平台类型和特性的属性 
+     */  
+    $.platform = $.platform || {};  
+  
+    /** 
+     * 判断是否为android平台 
+     */  
+    $.platform.isAndroid = /android/i.test(navigator.userAgent);  
+  
+  
+    /** 
+     * 判断是否为ipad平台 
+     */  
+    $.platform.isIpad = /ipad/i.test(navigator.userAgent);  
+  
+    /** 
+     * 判断是否为iphone平台 
+     */  
+    $.platform.isIphone = /iphone/i.test(navigator.userAgent);  
+  
+  
+    /** 
+     * 判断是否为macintosh平台 
+     */  
+    $.platform.isMacintosh = /macintosh/i.test(navigator.userAgent);  
+  
+  
+  
+    /** 
+     * 判断是否为windows平台 
+     */  
+    $.platform.isWindows = /windows/i.test(navigator.userAgent);  
+  
+  
+  
+    /** 
+     * 判断是否为x11平台 
+     */  
+    $.platform.isX11 = /x11/i.test(navigator.userAgent);  
+})(jQuery);  
+  
+  
+;(function($){  
+    /** 
+     * String增强 
+     */  
+    $.string = $.string || {};  
+  
+    /** 
+     * 对目标字符串进行html解码 
+     * @grammar $.string.decodeHTML(source) 
+     * @param {string} source 目标字符串 
+     *              
+     * @returns {string} html解码后的字符串 
+     */  
+    $.string.decodeHTML = function (source) {  
+        var str = String(source)  
+                    .replace(/"/g,'"')  
+                    .replace(/</g,'<')  
+                    .replace(/>/g,'>')  
+                    .replace(/&/g, "&");  
+        //处理转义的中文和实体字符  
+        return str.replace(/&#([\d]+);/g, function(_0, _1){  
+            return String.fromCharCode(parseInt(_1, 10));  
+        });  
+    };  
+  
+    /** 
+     * 对目标字符串进行html编码 
+     * @grammar $.string.encodeHTML(source) 
+     * @param {string} source 目标字符串 
+     * 编码字符有5个：&<>"' 
+     *              
+     * @returns {string} html编码后的字符串 
+     */  
+    $.string.encodeHTML = function (source) {  
+        return String(source)  
+                    .replace(/&/g,'&')  
+                    .replace(/</g,'<')  
+                    .replace(/>/g,'>')  
+                    .replace(/"/g, """)  
+                    .replace(/'/g, "'");  
+    };  
+  
+    /** 
+     * 去掉字符串中的html标签 
+     * @function 
+     * @grammar $.string.stripTags(source) 
+     * @param {string} source 要处理的字符串. 
+     * @return {String} 
+     */  
+    $.string.stripTags = function(source) {  
+        return String(source || '').replace(/<[^>]+>/g, '');  
+    };  
+  
+    /** 
+     * 将目标字符串中可能会影响正则表达式构造的字符串进行转义。 
+     * @grammar $.string.escapeReg(source) 
+     * @param {string} source 目标字符串 
+     * @remark 
+     * 给以下字符前加上“\”进行转义：.*+?^=!:${}()|[]/\ 
+     *              
+     * @returns {string} 转义后的字符串 
+     */  
+    $.string.escapeReg = function (source) {  
+        return String(source)  
+                .replace(new RegExp("([.*+?^=!:\x24{}()|[\\]\/\\\\])", "g"), '\\\x241');  
+    };  
+  
+    /** 
+     * 删除目标字符串两端的空白字符 
+     * @grammar $.string.trim(source) 
+     * @param {string} source 目标字符串 
+     * @remark 
+     * 不支持删除单侧空白字符 
+     *              
+     * @returns {string} 删除两端空白字符后的字符串 
+     */  
+  
+    (function () {  
+        var trimer = new RegExp("(^[\\s\\t\\xa0\\u3000]+)|([\\u3000\\xa0\\s\\t]+\x24)", "g");  
+          
+        $.string.trim = function (source) {  
+            return String(source)  
+                    .replace(trimer, "");  
+        };  
+    })();  
+})(jQuery);  
+  
+  
+;(function($){  
+    /** 
+     * GUID 
+     */  
+    $.lang = $.lang || {};  
+    /** 
+     * 返回一个当前页面的唯一标识字符串。 
+     * @grammar $.lang.guid() 
+     *              
+     * @returns {String} 当前页面的唯一标识字符串 
+     */  
+    $.lang.guid = function() {  
+        return "TANGRAM$" + $.lang._counter ++;  
+    };  
+  
+    //不直接使用window，可以提高3倍左右性能  
+    $.lang._counter = $.lang._counter || 1;  
+    $.guid = $.lang.guid;//设置$.page.guid别名$.guid  
+  
+  
+    /** 
+     * 判断目标参数是否为function或Function实例 
+     * @grammar $.lang.isFunction(source) 
+     * @param {Any} source 目标参数 
+     * @returns {boolean} 类型判断结果 
+     */  
+    $.lang.isFunction = function (source) {  
+        // chrome下,'function' == typeof /a/ 为true.  
+        return '[object Function]' == Object.prototype.toString.call(source);  
+    };  
+  
+    /** 
+     * 判断目标参数是否为Element对象 
+     * @grammar $.lang.isElement(source) 
+     * @param {Any} source 目标参数 
+     * @returns {boolean} 类型判断结果 
+     */  
+    $.lang.isElement = function (source) {  
+        return !!(source && source.nodeName && source.nodeType == 1);  
+    };  
+  
+    /** 
+     * 判断目标参数是否Array对象 
+     * @grammar $.lang.isArray(source) 
+     * @param {Any} source 目标参数    
+     * @returns {boolean} 类型判断结果 
+     */  
+    $.lang.isArray = function (source) {  
+        return '[object Array]' == Object.prototype.toString.call(source);  
+    };  
+})(jQuery);  
+  
+;(function($){  
+    /** 
+     * Array增强 
+     */  
+     $.array = $.array || {};  
+  
+    /** 
+     * 查询数组中指定元素的索引位置 
+     * @grammar $.array.indexOf(source, match[, fromIndex]) 
+     * @param {Array} source 需要查询的数组 
+     * @param {Any} match 查询项 
+     * @param {number} [fromIndex] 查询的起始位索引位置，如果为负数，则从source.length+fromIndex往后开始查找 
+     *              
+     * @returns {number} 指定元素的索引位置，查询不到时返回-1 
+     */  
+    $.array.indexOf = function (source, match, fromIndex) {  
+        var len = source.length,  
+            iterator = match;  
+              
+        fromIndex = fromIndex | 0;  
+        if(fromIndex < 0){//小于0  
+            fromIndex = Math.max(0, len + fromIndex)  
+        }  
+        for ( ; fromIndex < len; fromIndex++) {  
+            if(fromIndex in source && source[fromIndex] === match) {  
+                return fromIndex;  
+            }  
+        }  
+          
+        return -1;  
+    };  
+  
+    /** 
+     * 判断一个数组中是否包含给定元素 
+     * @grammar $.array.contains(source, obj) 
+     * @param {Array} source 需要判断的数组. 
+     * @param {Any} obj 要查找的元素. 
+     * @return {boolean} 判断结果. 
+     * @author berg 
+     */  
+    $.array.contains = function(source, obj) {  
+        return ($.array.indexOf(source, obj) >= 0);  
+    };  
+  
+    /** 
+     * 清空一个数组 
+     * @grammar $.array.empty(source) 
+     * @param {Array} source 需要清空的数组. 
+     * @author berg 
+     */  
+    $.array.empty = function(source) {  
+        source.length = 0;  
+    };  
+  
+    /** 
+     * 从后往前，查询数组中指定元素的索引位置 
+     * @grammar $.array.lastIndexOf(source, match) 
+     * @param {Array} source 需要查询的数组 
+     * @param {Any} match 查询项 
+     * @param {number} [fromIndex] 查询的起始位索引位置，如果为负数，则从source.length+fromIndex往前开始查找 
+     *              
+     * @returns {number} 指定元素的索引位置，查询不到时返回-1 
+     */  
+  
+    $.array.lastIndexOf = function (source, match, fromIndex) {  
+        var len = source.length;  
+  
+        fromIndex = fromIndex | 0;  
+  
+        if(!fromIndex || fromIndex >= len){  
+            fromIndex = len - 1;  
+        }  
+        if(fromIndex < 0){  
+            fromIndex += len;  
+        }  
+        for(; fromIndex >= 0; fromIndex --){  
+            if(fromIndex in source && source[fromIndex] === match){  
+                return fromIndex;  
+            }  
+        }  
+          
+        return -1;  
+    };  
+  
+    /** 
+     * 遍历数组中所有元素，将每一个元素应用方法进行转换，并返回转换后的新数组。 
+     * @grammar $.array.map(source, iterator[, thisObject]) 
+     * @param {Array}    source   需要遍历的数组. 
+     * @param {Function} iterator 对每个数组元素进行处理的函数. 
+     * @param {Object} [thisObject] 函数调用时的this指针，如果没有此参数，默认是当前遍历的数组 
+     * @return {Array} map后的数组. 
+     */  
+    $.array.map = function(source, iterator, thisObject) {  
+        var results = [],  
+            i = 0,  
+            l = source.length;  
+        for (; i < l; i++) {  
+            results[i] = iterator.call(thisObject || source, source[i], i);  
+        }  
+        return results;  
+    };  
+  
+    /** 
+     * 遍历数组中所有元素，将每一个元素应用方法进行合并，并返回合并后的结果。 
+     * @grammar $.array.reduce(source, iterator[, initializer]) 
+     * @param {Array}    source 需要遍历的数组. 
+     * @param {Function} iterator 对每个数组元素进行处理的函数，函数接受四个参数：上一次reduce的结果（或初始值），当前元素值，索引值，整个数组. 
+     * @param {Object}   [initializer] 合并的初始项，如果没有此参数，默认用数组中的第一个值作为初始值. 
+     * @return {Array} reduce后的值. 
+     */  
+    $.array.reduce = function(source, iterator, initializer) {  
+        var i = 0,  
+            l = source.length,  
+            found = 0;  
+  
+        if( arguments.length < 3){  
+            //没有initializer的情况，找到第一个可用的值  
+            for(; i < l; i++){  
+                initializer = source[i++];  
+                found = 1;  
+                break;  
+            }  
+            if(!found){  
+                return ;  
+            }  
+        }  
+  
+        for (; i < l; i++) {  
+            if( i in source){  
+                initializer = iterator(initializer, source[i] , i , source);  
+            }  
+        }  
+        return initializer;  
+    };  
+  
+    /** 
+     * 移除数组中的项 
+     * @grammar $.array.remove(source, match) 
+     * @param {Array} source 需要移除项的数组 
+     * @param {Any} match 要移除的项 
+     *              
+     * @returns {Array} 移除后的数组 
+     */  
+    $.array.remove = function (source, match) {  
+        var len = source.length;  
+              
+        while (len--) {  
+            if (len in source && source[len] === match) {  
+                source.splice(len, 1);  
+            }  
+        }  
+        return source;  
+    };  
+  
+    /** 
+     * 移除数组中的项 
+     * @grammar $.array.removeAt(source, index) 
+     * @param {Array} source 需要移除项的数组 
+     * @param {number} index 要移除项的索引位置 
+     * @returns {Any} 被移除的数组项 
+     */  
+    $.array.removeAt = function (source, index) {  
+        return source.splice(index, 1)[0];  
+    };  
+  
+    /** 
+     * 过滤数组中的相同项。如果两个元素相同，会删除后一个元素。 
+     * @grammar $.array.unique(source[, compareFn]) 
+     * @param {Array} source 需要过滤相同项的数组 
+     * @param {Function} [compareFn] 比较两个数组项是否相同的函数,两个数组项作为函数的参数。 
+     *              
+     * @returns {Array} 过滤后的新数组 
+     */  
+    $.array.unique = function (source, compareFn) {  
+        var len = source.length,  
+            result = source.slice(0),  
+            i, datum;  
+              
+        if ('function' != typeof compareFn) {  
+            compareFn = function (item1, item2) {  
+                return item1 === item2;  
+            };  
+        }  
+          
+        // 从后往前双重循环比较  
+        // 如果两个元素相同，删除后一个  
+        while (--len > 0) {  
+            datum = result[len];  
+            i = len;  
+            while (i--) {  
+                if (compareFn(datum, result[i])) {  
+                    result.splice(len, 1);  
+                    break;  
+                }  
+            }  
+        }  
+  
+        return result;  
+    };  
+})(jQuery);  
+  
+;(function(){  
+    /** 
+     * 操作cookie的方法 
+     * @namespace $.cookie 
+     */  
+    $.cookie = $.cookie || {};  
+  
+    /** 
+     * 验证字符串是否合法的cookie键名 
+     *  
+     * @param {string} source 需要遍历的数组 
+     * @meta standard 
+     * @return {boolean} 是否合法的cookie键名 
+     */  
+    $.cookie._isValidKey = function (key) {  
+        // http://www.w3.org/Protocols/rfc2109/rfc2109  
+        // Syntax:  General  
+        // The two state management headers, Set-Cookie and Cookie, have common  
+        // syntactic properties involving attribute-value pairs.  The following  
+        // grammar uses the notation, and tokens DIGIT (decimal digits) and  
+        // token (informally, a sequence of non-special, non-white space  
+        // characters) from the HTTP/1.1 specification [RFC 2068] to describe  
+        // their syntax.  
+        // av-pairs   = av-pair *(";" av-pair)  
+        // av-pair    = attr ["=" value] ; optional value  
+        // attr       = token  
+        // value      = word  
+        // word       = token | quoted-string  
+          
+        // http://www.ietf.org/rfc/rfc2068.txt  
+        // token      = 1*<any CHAR except CTLs or tspecials>  
+        // CHAR       = <any US-ASCII character (octets 0 - 127)>  
+        // CTL        = <any US-ASCII control character  
+        //              (octets 0 - 31) and DEL (127)>  
+        // tspecials  = "(" | ")" | "<" | ">" | "@"  
+        //              | "," | ";" | ":" | "\" | <">  
+        //              | "/" | "[" | "]" | "?" | "="  
+        //              | "{" | "}" | SP | HT  
+        // SP         = <US-ASCII SP, space (32)>  
+        // HT         = <US-ASCII HT, horizontal-tab (9)>  
+              
+        return (new RegExp("^[^\\x00-\\x20\\x7f\\(\\)<>@,;:\\\\\\\"\\[\\]\\?=\\{\\}\\/\\u0080-\\uffff]+\x24")).test(key);  
+    };  
+  
+    /** 
+     * 获取cookie的值，不对值进行解码 
+     * @grammar $.cookie.getRaw(key) 
+     * @param {string} key 需要获取Cookie的键名 
+     * @returns {string|null} 获取的Cookie值，获取不到时返回null 
+     */  
+    $.cookie.getRaw = function (key) {  
+        if ($.cookie._isValidKey(key)) {  
+            var reg = new RegExp("(^| )" + key + "=([^;]*)(;|\x24)"),  
+                result = reg.exec(document.cookie);  
+                  
+            if (result) {  
+                return result[2] || null;  
+            }  
+        }  
+  
+        return null;  
+    };  
+  
+    /** 
+     * 设置cookie的值，不对值进行编码 
+     * @grammar $.cookie.setRaw(key, value[, options]) 
+     * @param {string} key 需要设置Cookie的键名 
+     * @param {string} value 需要设置Cookie的值 
+     * @param {Object} [options] 设置Cookie的其他可选参数 
+     * @config {string} [path] cookie路径 
+     * @config {Date|number} [expires] cookie过期时间,如果类型是数字的话, 单位是毫秒 
+     * @config {string} [domain] cookie域名 
+     * @config {string} [secure] cookie是否安全传输 
+     * @remark 
+     *  
+    <b>options参数包括：</b><br> 
+    path:cookie路径<br> 
+    expires:cookie过期时间，Number型，单位为毫秒。<br> 
+    domain:cookie域名<br> 
+    secure:cookie是否安全传输 
+     */  
+    $.cookie.setRaw = function (key, value, options) {  
+        if (!$.cookie._isValidKey(key)) {  
+            return;  
+        }  
+          
+        options = options || {};  
+        //options.path = options.path || "/"; // meizz 20100402 设定一个初始值，方便后续的操作  
+        //berg 20100409 去掉，因为用户希望默认的path是当前路径，这样和浏览器对cookie的定义也是一致的  
+          
+        // 计算cookie过期时间  
+        var expires = options.expires;  
+        if ('number' == typeof options.expires) {  
+            expires = new Date();  
+            expires.setTime(expires.getTime() + options.expires);  
+        }  
+          
+        document.cookie =  
+            key + "=" + value  
+            + (options.path ? "; path=" + options.path : "")  
+            + (expires ? "; expires=" + expires.toGMTString() : "")  
+            + (options.domain ? "; domain=" + options.domain : "")  
+            + (options.secure ? "; secure" : '');   
+    };  
+  
+    /** 
+     * 删除cookie的值 
+     * @grammar $.cookie.remove(key, options) 
+     * @param {string} key 需要删除Cookie的键名 
+     * @param {Object} options 需要删除的cookie对应的 path domain 等值 
+     */  
+    $.cookie.remove = function (key, options) {  
+        options = options || {};  
+        options.expires = new Date(0);  
+        $.cookie.setRaw(key, '', options);  
+    };  
+  
+    /** 
+     * 获取cookie的值，用decodeURIComponent进行解码 
+     * @grammar $.cookie.get(key) 
+     * @param {string} key 需要获取Cookie的键名 
+     * @remark 
+     * <b>注意：</b>该方法会对cookie值进行decodeURIComponent解码。如果想获得cookie源字符串，请使用getRaw方法。 
+     *              
+     * @returns {string|null} cookie的值，获取不到时返回null 
+     */  
+    $.cookie.get = function (key) {  
+        var value = $.cookie.getRaw(key);  
+        if ('string' == typeof value) {  
+            value = decodeURIComponent(value);  
+            return value;  
+        }  
+        return null;  
+    };  
+  
+    /** 
+     * 设置cookie的值，用encodeURIComponent进行编码 
+     * @grammar $.cookie.set(key, value[, options]) 
+     * @param {string} key 需要设置Cookie的键名 
+     * @param {string} value 需要设置Cookie的值 
+     * @param {Object} [options] 设置Cookie的其他可选参数 
+     * @config {string} [path] cookie路径 
+     * @config {Date|number} [expires] cookie过期时间,如果类型是数字的话, 单位是毫秒 
+     * @config {string} [domain] cookie域名 
+     * @config {string} [secure] cookie是否安全传输 
+     * @remark 
+     *  
+    1. <b>注意：</b>该方法会对cookie值进行encodeURIComponent编码。如果想设置cookie源字符串，请使用setRaw方法。<br><br> 
+    2. <b>options参数包括：</b><br> 
+    path:cookie路径<br> 
+    expires:cookie过期时间，Number型，单位为毫秒。<br> 
+    domain:cookie域名<br> 
+    secure:cookie是否安全传输 
+     */  
+    $.cookie.set = function (key, value, options) {  
+        $.cookie.setRaw(key, encodeURIComponent(value), options);  
+    };  
+})(jQuery);  
+  
+;(function($){  
+    $.number = $.number || {};  
+  
+    /** 
+     * 为目标数字添加逗号分隔 
+     * @grammar $.number.comma(source[, length]) 
+     * @param {number} source 需要处理的数字 
+     * @param {number} [length] 两次逗号之间的数字位数，默认为3位 
+     *              
+     * @returns {string} 添加逗号分隔后的字符串 
+     */  
+    $.number.comma = function (source, length) {  
+        if (!length || length < 1) {  
+            length = 3;  
+        }  
+  
+        source = String(source).split(".");  
+        source[0] = source[0].replace(new RegExp('(\\d)(?=(\\d{'+length+'})+$)','ig'),"$1,");  
+        return source.join(".");  
+    };  
+  
+    /** 
+     * 生成随机整数，范围是[min, max] 
+     * @grammar $.number.randomInt(min, max)  
+     *  
+     * @param   {number} min    随机整数的最小值 
+     * @param   {number} max    随机整数的最大值 
+     * @return  {number}        生成的随机整数 
+     */  
+    $.number.randomInt = function(min, max){  
+        return Math.floor(Math.random() * (max - min + 1) + min);  
+    };  
+  
+    /** 
+     * 对目标数字进行0补齐处理 
+     * @grammar $.number.pad(source, length) 
+     * @param {number} source 需要处理的数字 
+     * @param {number} length 需要输出的长度 
+     *              
+     * @returns {string} 对目标数字进行0补齐处理后的结果 
+     */  
+    $.number.pad = function (source, length) {  
+        var pre = "",  
+            negative = (source < 0),  
+            string = String(Math.abs(source));  
+  
+        if (string.length < length) {  
+            pre = (new Array(length - string.length + 1)).join('0');  
+        }  
+  
+        return (negative ?  "-" : "") + pre + string;  
+    };  
+})(jQuery);  
+  
+;(function($){  
+    $.sio = $.sio || {};  
+    /** 
+     * 通过请求一个图片的方式令服务器存储一条日志 
+     * @grammar $.sio.log(url) 
+     * @param {string} url 要发送的地址. 
+     */  
+    $.sio.log = function(url) {  
+      var img = new Image(),  
+          key = 'tangram_sio_log_' + Math.floor(Math.random() *  
+                2147483648).toString(36);  
+  
+      // 这里一定要挂在window下  
+      // 在IE中，如果没挂在window下，这个img变量又正好被GC的话，img的请求会abort  
+      // 导致服务器收不到日志  
+      window[key] = img;  
+  
+      img.onload = img.onerror = img.onabort = function() {  
+        // 下面这句非常重要  
+        // 如果这个img很不幸正好加载了一个存在的资源，又是个gif动画  
+        // 则在gif动画播放过程中，img会多次触发onload  
+        // 因此一定要清空  
+        img.onload = img.onerror = img.onabort = null;  
+  
+        window[key] = null;  
+  
+        // 下面这句非常重要  
+        // new Image创建的是DOM，DOM的事件中形成闭包环引用DOM是典型的内存泄露  
+        // 因此这里一定要置为null  
+        img = null;  
+      };  
+  
+      // 一定要在注册了事件之后再设置src  
+      // 不然如果图片是读缓存的话，会错过事件处理  
+      // 最后，对于url最好是添加客户端时间来防止缓存  
+      // 同时服务器也配合一下传递Cache-Control: no-cache;  
+      img.src = url;  
+    };  
+})(jQuery);  
+  
+  
+;(function($){  
+    $.url = $.url || {};  
+    /** 
+     * 对字符串进行%#&+=以及和\s匹配的所有字符进行url转义 
+     * @grammar $.url.escapeSymbol(source) 
+     * @param {string} source 需要转义的字符串. 
+     * @return {string} 转义之后的字符串. 
+     * @remark 
+     * 用于get请求转义。在服务器只接受gbk，并且页面是gbk编码时，可以经过本转义后直接发get请求。 
+     * 
+     * @return {string} 转义后的字符串 
+     */  
+    $.url.escapeSymbol = function(source) {  
+          
+        //TODO: 之前使用\s来匹配任意空白符  
+        //发现在ie下无法匹配中文全角空格和纵向指标符\v，所以改\s为\f\r\n\t\v以及中文全角空格和英文空格  
+        //但是由于ie本身不支持纵向指标符\v,故去掉对其的匹配，保证各浏览器下效果一致  
+        return String(source).replace(/[#%&+=\/\\\ \　\f\r\n\t]/g, function(all) {  
+            return '%' + (0x100 + all.charCodeAt()).toString(16).substring(1).toUpperCase();  
+        });  
+    };  
+  
+    /** 
+     * 根据参数名从目标URL中获取参数值 
+     * @grammar $.url.getQueryValue(url, key) 
+     * @param {string} url 目标URL 
+     * @param {string} key 要获取的参数名 
+     *              
+     * @returns {string|null} - 获取的参数值，其中URI编码后的字符不会被解码，获取不到时返回null 
+     */  
+    $.url.getQueryValue = function (url, key) {  
+        var reg = new RegExp(  
+                            "(^|&|\\?|#)"   
+                            + $.string.escapeReg(key)   
+                            + "=([^&#]*)(&|\x24|#)",   
+                        "");  
+        var match = url.match(reg);  
+        if (match) {  
+            return match[2];  
+        }  
+          
+        return null;  
+    };  
+  
+    /** 
+     * 将json对象解析成query字符串 
+     * @grammar $.url.jsonToQuery(json[, replacer]) 
+     * @param {Object} json 需要解析的json对象 
+     * @param {Function=} replacer_opt 对值进行特殊处理的函数，function (value, key) 
+     *              
+     * @return {string} - 解析结果字符串，其中值将被URI编码，{a:'&1 '} ==> "a=%261%20"。 
+     */  
+    $.url.jsonToQuery = function (json, replacer_opt) {  
+        var result = [],   
+            itemLen,  
+            replacer = replacer_opt || function (value) {  
+              return $.url.escapeSymbol(value);  
+            };  
+              
+        $.each(json, function(item, key){  
+            // 这里只考虑item为数组、字符串、数字类型，不考虑嵌套的object  
+            if ($.lang.isArray(item)) {  
+                itemLen = item.length;  
+                // value的值需要encodeURIComponent转义吗？  
+                // FIXED 优化了escapeSymbol函数  
+                while (itemLen--) {  
+                    result.push(key + '=' + replacer(item[itemLen], key));  
+                }  
+            } else {  
+                result.push(key + '=' + replacer(item, key));  
+            }  
+        });  
+          
+        return result.join('&');  
+    };  
+  
+  
+    /** 
+     * 解析目标URL中的参数成json对象 
+     * @grammar $.url.queryToJson(url) 
+     * @param {string} url 目标URL 
+     *              
+     * @returns {Object} - 解析为结果对象，其中URI编码后的字符不会被解码，'a=%20' ==> {a:'%20'}。 
+     */  
+    $.url.queryToJson = function (url) {  
+        var query   = url.substr(url.lastIndexOf('?') + 1),  
+            params  = query.split('&'),  
+            len     = params.length,  
+            result  = {},  
+            i       = 0,  
+            key, value, item, param;  
+          
+        for (; i < len; i++) {  
+            if(!params[i]){  
+                continue;  
+            }  
+            param   = params[i].split('=');  
+            key     = param[0];  
+            value   = param[1];  
+              
+            item = result[key];  
+            if ('undefined' == typeof item) {  
+                result[key] = value;  
+            } else if ($.lang.isArray(item)) {  
+                item.push(value);  
+            } else { // 这里只可能是string了  
+                result[key] = [item, value];  
+            }  
+        }  
+          
+        return result;  
+    };  
+})(jQuery);  

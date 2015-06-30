@@ -1,0 +1,486 @@
+<!DOCTYPE HTML>
+<html lang=en>
+
+<head>
+    <meta http-equiv=content-type content="text/html;charset=utf-8">
+    <meta http-equiv=X-UA-Compatible content="IE=Edge">
+    <title>爱鲜蜂一家专做网上外卖的社区外卖O2O类型网站_打造极速的订外卖平台_爱鲜蜂官网</title>
+    <meta title=keywords content=爱鲜蜂,外卖O2O,网上外卖爱鲜蜂,订外卖爱鲜蜂>
+    <meta title=description content=各种新鲜,闪电送达!爱鲜蜂一家做社区OTO的外卖网站，提供零食,饮料,酒水,星巴克等产品.1小时内送货上门,下单后鲜蜂侠火速送上冰饮零食、卤味夜宵~外卖O2O领域的创新企业,爱鲜蜂一家专做社区外卖的网站>
+    <meta name=renderer content=webkit>
+    <link rel="shortcut icon" href=/static/bee/img/www/favicon-959ec4c0.ico type=image/x-icon>
+    <link rel=stylesheet href=/static/bee/css/www_index.all-71fe183a.css>
+</head>
+
+<body>
+    <div id=mod-container class="mod-container clearfix">
+        <div class=topnav style=width:100%;>
+            <div class=main>
+                <div class=header_box02>
+                    <div class=logo>
+                        <h1 class=logo_h1><a href="/" class=logo_h1><img src=/static/bee/img/www/icon_logo02-6e17ad44.jpg width=361 height=72 alt=爱鲜蜂></a></h1></div>
+                    <div class=menu_bg02>
+                        <div class=menu>
+                            <ul>
+                                <li><a href="/" class="current">首页</a></li>
+                                <li><a href=/w/recommend class="">鲜蜂生活</a></li>
+                                <li><a href=/w/flash class="">闪电购</a></li>
+                                <li><a href=/show/appDownload class="">下载爱鲜蜂</a></li>
+                            </ul>
+                        </div>
+                        <div class=user_info>
+                            <ul>
+                                <li id=unlogin><a href=javascript:;>手机验证</a></li>
+                                <li id=logined class=hide>
+                                    <a href=javascript:;></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class=clear></div>
+                    </div>
+                    <div class="togglebox hide" id=togglebox style=background:#333;>
+                        <p><a href="/w/myinfo?tag=myaddress">收货信息</a></p>
+                        <p><a href="/show/orderlist?tag=myorder">我的订单</a></p>
+                        <p><a href=javascript:; id=quit>退 出</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="banner pr">
+            <ul id=slider class=pr>
+                <li>
+                    <div class="slider-bg  current" style="background-image: url(http://www.beequick.cn//upload/activity/2015031900061097.jpg);">
+                        <a href=http://m.beequick.cn/show/appDownload title=1元秒杀></a>
+                    </div>
+                </li>
+                <li>
+                    <div class="slider-bg  " style="background-image: url(http://www.beequick.cn//upload/activity/2015031812032585.jpg);">
+                        <a href=http://m.beequick.cn/show/appDownload title=1元尝鲜></a>
+                    </div>
+                </li>
+                <li>
+                    <div class="slider-bg  " style="background-image: url(http://www.beequick.cn//upload/activity/2014120815550149.jpg);">
+                        <a href=http://www.beequick.cn/w/flash title=PC首页轮播图2></a>
+                    </div>
+                </li>
+                <li>
+                    <div class="slider-bg  " style="background-image: url(http://www.beequick.cn//upload/activity/2014112619581939.jpg);">
+                        <a href=http://www.beequick.cn/w/flash title=PC首页轮播图></a>
+                    </div>
+                </li>
+            </ul>
+            <div id=slider-number-box>
+                <a class="active" href=javascript:;></a>&nbsp;&nbsp;
+                <a class="" href=javascript:;></a>&nbsp;&nbsp;
+                <a class="" href=javascript:;></a>&nbsp;&nbsp;
+                <a class="" href=javascript:;></a>&nbsp;&nbsp; </div>
+        </div>
+        <div class="main search_box">
+            <div id=address_in>
+                <div class="address_in address_in1 clr">
+                    <div class="city fl ca">
+                        <p class="p1 citysel" id=city_select_p><span class=s1>北京市</span><span class=s2 id=city_select></span></p>
+                        <p class=p2 id=cities></p>
+                    </div>
+                    <div class="area fl ca">
+                        <p class="p1 areasel" id=area_select_p><span class=s1>东城区</span><span class=s2 id=area_select></span></p>
+                        <p class=p2 id=areas></p>
+                    </div>
+                    <div class="addr fl"><span class=addrtip>配送地址</span>
+                        <input type=text class=addrtxt id=addrtxt placeholder=请输入详细收货地址>
+                        <p class=p3 id=addrs></p>
+                    </div>
+                    <div class="submit fr" id=submitAddr>提 交</div>
+                </div>
+                <div class="address_in address_in2 clr" style=display:none;>
+                    <div class="city fl ca">
+                        <p class="p1 citysel"><span class=s1></span><span class=s2></span></p>
+                    </div>
+                    <div class="area fl ca">
+                        <p class="p1 areasel"><span class=s1></span><span class=s2></span></p>
+                    </div>
+                    <div class="addr fl"><span class=addrtip>配送地址</span><span class=addrspan id=addrspan></span></div>
+                    <div class="submit fr" id=modifyAddr>更改地址</div>
+                </div>
+                <input type=hidden id=user_city_id>
+                <input type=hidden id=user_area_id>
+                <input type=hidden id=user_address>
+                <div class="errortips clr" id=errtips><span class=s1></span><span class="s2 fr" onclick=$(this).parent().fadeOut()>X</span></div>
+            </div>
+        </div>
+        <div class="m_top main">
+            <div class=main_L>
+                <div class="title01 title_bg"></div>
+                <div class=what_box_L>
+                    <div class=what_box style="top:0; left:0;">
+                        <ul class=clearfix>
+                            <li onclick="location.href='/w/flash?datacid=82'">
+                                <div class=photo><img src=/static/bee/img/www/300X200_01-39b5ea84.jpg></div>
+                                <div class=rsp></div>
+                                <div class=txt>
+                                    <h3>零食</h3></div>
+                                <div class=text><a href="/w/flash?datacid=82"><h3>零食</h3></a></div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class=what_box style="top:0; left:300px;">
+                        <ul class=clearfix>
+                            <li onclick="location.href='/w/flash?datacid=92'">
+                                <div class=photo><img src=/static/bee/img/www/250X200_01-4b83e807.jpg></div>
+                                <div class=rsp></div>
+                                <div class=txt>
+                                    <h3>饮料</h3></div>
+                                <div class=text><a href="/w/flash?datacid=92"><h3>饮料</h3></a></div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class=what_box style="top:0; left:550px">
+                        <ul class=clearfix>
+                            <li onclick="location.href='/w/flash?datacid=93'">
+                                <div class=photo><img src=/static/bee/img/www/250X200_02-55d91360.jpg></div>
+                                <div class=rsp></div>
+                                <div class=txt>
+                                    <h3>酒水</h3></div>
+                                <div class=text><a href="/w/flash?datacid=93"><h3>酒水</h3></a></div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class=what_box style="top:200px; left:0;">
+                        <ul class=clearfix>
+                            <li onclick="location.href='/w/flash?datacid=108'">
+                                <div class=photo><img src=/static/bee/img/www/300X200_02-27a78e01.jpg></div>
+                                <div class=rsp></div>
+                                <div class=txt>
+                                    <h3>星巴克</h3></div>
+                                <div class=text><a href="/w/flash?datacid=108"><h3>星巴克</h3></a></div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class=what_box style="top:200px; left:300px;">
+                        <ul class=clearfix>
+                            <li onclick="location.href='/w/flash?datacid=106'">
+                                <div class=photo><img src=/static/bee/img/www/500X200-2f338c8f.jpg></div>
+                                <div class=rsp></div>
+                                <div class=txt>
+                                    <h3>鲜蜂鲜果</h3></div>
+                                <div class=text><a href="/w/flash?datacid=106"><h3>鲜蜂鲜果</h3></a></div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class=clear></div>
+                </div>
+            </div>
+            <div class=main_R>
+                <div class="title02 title_bg"></div>
+                <div class=content>
+                    <ul class=menu-one>
+                        <li class="firstChild menu-show">
+                            <div class=download><span class=txt><div class="icon_ios_app icon"></div>ios app</span> <span class=arrow></span></div>
+                            <div class=menu-two style=display:block>
+                                <div>
+                                    <a href=http://itunes.apple.com/cn/app/id908613321 target=_blank><img src=/static/bee/img/www/ios_andiord-c91f02a9.jpg></a>
+                                    <p><a href=javascript:;>扫描/点击二维码，均可下载</a></p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class=download><span class=txt><div class="icon_andiord_app icon"></div>android app</span> <span class=arrow></span></div>
+                            <div class=menu-two>
+                                <div>
+                                    <a href="http://android.myapp.com/myapp/detail.htm?apkName=com.bjzcht.lovebeequick" target=_blank><img src=/static/bee/img/www/ios_andiord-c91f02a9.jpg></a>
+                                    <p><a href=javascript:;>扫描/点击二维码，均可下载</a></p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class=download><span class=txt><div class="icon_weixin_app icon"></div>微信公众号</span> <span class=arrow></span></div>
+                            <div class=menu-two>
+                                <div><img src=/static/bee/img/www/weixin_index-088ca666.jpg>
+                                    <p><a href=javascript:;>扫描关注</a></p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class=download><span class=txt><div class="icon_weibo_app icon"></div>微博公众号</span> <span class=arrow></span></div>
+                            <div class=menu-two>
+                                <div><img src=/static/bee/img/www/sina_index-c1d0851d.jpg>
+                                    <p><a href=javascript:;>扫描关注</a></p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class=clear></div>
+        <div class="main m_top">
+            <div class=pic_txt>
+                <h2><div class="title03 title_bg"></div></h2>
+                <ul></ul>
+            </div>
+        </div>
+        <div class=foot_box id=foot_box>
+            <div class=main>
+                <div class=foot_nav>
+                    <h2>爱鲜蜂</h2>
+                    <ul>
+                        <li><a href="/show/info?tag=about">关于爱鲜蜂</a></li>
+                        <li><a href="/show/info?tag=contact">联系我们</a></li>
+                        <li><a href="/show/info?tag=jobs">招贤纳士</a></li>
+                        <li><a href="/show/info?tag=news">公司新闻</a></li>
+                    </ul>
+                </div>
+                <div class=foot_nav>
+                    <h2>服务</h2>
+                    <ul>
+                        <li><a href="/show/info?tag=qa">常见问题</a></li>
+                        <li><a href="/show/info?tag=feedback">意见反馈</a></li>
+                        <li><a href="/show/info?tag=links">友情链接</a></li>
+                    </ul>
+                </div>
+                <div class=foot_down>
+                    <h2>下载客户端</h2>
+                    <dl>
+                        <dt>APP</dt>
+                        <dd><img src=/static/bee/img/www/ios_andiord_footer-a9cc2737.jpg></dd>
+                    </dl>
+                    <dl>
+                        <dt>微信公众号</dt>
+                        <dd><img src=/static/bee/img/www/weixin_footer-a27eb58f.jpg></dd>
+                    </dl>
+                    <dl>
+                        <dt>微博公众号</dt>
+                        <dd><img src=/static/bee/img/www/sina_footer-dfb5ac21.jpg></dd>
+                    </dl>
+                </div>
+                <div class=foot_about>
+                    <h2>北京众成汇通信息技术有限公司</h2>
+                    <h3>京ICP备14018854号－1</h3>
+                    <h4>400-8484-842</h4></div>
+            </div>
+        </div>
+    </div>
+    <script type=text/javascript>
+    window.SYS_CONF = {
+        environ: 'online',
+        now: parseInt("1427780362000"),
+        jsNow: (new Date()).getTime(),
+        errno: 0,
+        errmsg: "ok",
+        logid: "551a330a1a6c55071",
+        geologid: "h5mb20150331133029L551a31e286af07869X3535079432185",
+        beeToken: "eafe0551f16ce29fa2c477c3f329cb60",
+        tn: "",
+        tg: "",
+        appName: "bee",
+        isMobile: false,
+        lastAddrId: "",
+        userInfo: {
+            "beeId": "5514ef0db3e398407",
+            "authorized": "",
+            "logUid": "5514ef0db3e398407"
+        },
+        domain: {
+            "clicklog": "http://log.beequick.cn/",
+            "current": "http://10.157.162.227",
+            "static": "http://www.beequick.cn"
+        },
+        platform: {
+            "apple": false,
+            "ios70": "0",
+            "m": false,
+            "android": false,
+            "ipad": false,
+            "iphone": false,
+            "weibo": false,
+            "weixin": false,
+            "mac": false,
+            "windows": true,
+            "app": false
+        },
+        promotion: {
+            "shoppingCart": {
+                "minPrice": "30"
+            },
+            "minPrice": {
+                "9293": "0",
+                "3778": "0",
+                "3780": "0",
+                "3781": "0",
+                "3782": "0",
+                "3783": "0",
+                "3779": "0",
+                "4706": "0",
+                "4704": "0",
+                "5145": "0",
+                "5146": "0",
+                "5147": "0",
+                "5148": "0",
+                "5149": "0",
+                "6104": "0",
+                "6106": "0",
+                "5630": "0",
+                "5629": "0",
+                "5625": "0",
+                "6486": "0",
+                "6487": "0",
+                "6488": "0",
+                "6490": "0",
+                "6491": "0",
+                "7007": "0",
+                "8695": "0",
+                "8697": "0",
+                "8698": "0",
+                "8699": "0"
+            },
+            "countLimit": {
+                "3778": "1",
+                "3780": "1",
+                "3781": "1",
+                "3782": "1",
+                "3783": "1",
+                "3779": "1",
+                "4706": "1",
+                "4704": "1",
+                "3178": "1",
+                "3179": "1",
+                "5145": "1",
+                "5146": "1",
+                "5147": "1",
+                "5148": "1",
+                "5149": "1",
+                "6104": "1",
+                "6106": "1",
+                "8422": "1",
+                "8421": "1",
+                "8418": "1",
+                "8416": "1",
+                "8415": "1",
+                "8414": "1",
+                "9376": "1",
+                "9377": "1",
+                "9378": "1",
+                "9379": "1",
+                "9380": "1",
+                "9381": "1",
+                "5619": "1",
+                "5620": "1",
+                "5621": "1",
+                "5631": "1",
+                "5622": "1",
+                "5623": "1",
+                "5624": "1",
+                "5916": "1",
+                "5915": "1",
+                "7035": "1",
+                "7034": "1",
+                "7596": "1",
+                "7597": "1",
+                "7598": "1",
+                "7599": "1",
+                "8746": "1",
+                "8747": "1",
+                "8748": "1",
+                "8750": "1",
+                "8749": "1",
+                "8751": "1",
+                "8752": "1",
+                "9590": "1",
+                "9591": "1",
+                "9521": "1",
+                "5630": "1",
+                "5629": "1",
+                "5625": "1",
+                "6486": "1",
+                "6487": "1",
+                "6488": "1",
+                "6490": "1",
+                "6491": "1",
+                "7593": "1",
+                "7594": "1",
+                "7595": "1",
+                "8757": "1",
+                "8735": "1",
+                "8734": "1",
+                "8733": "1",
+                "8732": "1",
+                "8731": "1",
+                "8730": "1",
+                "8729": "1",
+                "8728": "1",
+                "8697": "1",
+                "8698": "1",
+                "8699": "1"
+            },
+            "hidden": [],
+            "exclusion": {
+                "id": ["3178,3179", "3778,3780,3781,3782,3783,3779,4706,4704", "5145,5146,5147,5148,5149,6104,6106", "8422,8421,8418,8416,8415,8414,9376,9377,9378,9379,9380,9381", "5619,5620,5621,5631,5622,5623,5624,5916,5915,7035", "7034,7596,7597,7598,7599,8746,8747,8748,8750,8749,8751,8752,9590,9591,9521", "5630,5629,5625,6486,6487,6488,6490,6491", "7593,7594,7595,8757,8735,8734,8733,8732,8731,8730,8729,8728", "8697,8698,8699"],
+                "brand": ["43,155"]
+            },
+            "exclusive": {
+                "8680": "0",
+                "8954": "1",
+                "9294": "1",
+                "9382": "1"
+            },
+            "timestart": {
+                "minPrice": {
+                    "time": "201409220000",
+                    "timestamp": "1411315200",
+                    "isStart": true
+                },
+                "wxFanxian": {
+                    "time": "201502040000",
+                    "timestamp": "1422979200",
+                    "isStart": true
+                },
+                "queen": {
+                    "time": "201503070900",
+                    "timestamp": "1425690000",
+                    "isStart": true
+                },
+                "queenBeforeEnd": {
+                    "time": "201503180000",
+                    "timestamp": "1426608000",
+                    "isStart": true
+                }
+            },
+            "welcome": {
+                "text": "各种新鲜闪电送达~<br/>购物满百免运费",
+                "from": "201409220000"
+            },
+            "welcomeLogo": {
+                "active": true,
+                "canShow": true,
+                "url": "/static/bee/img/phone/welcome/chalk2.jpg",
+                "cacheKey": "001f46c6",
+                "hadCached": true,
+                "geoBottom": "-92px",
+                "key": "chalk",
+                "bgPosition": "center top"
+            }
+        },
+        shareSerie: '10a66cvlFBUgJuYI/LEw',
+        sns: {
+            userId: '',
+            signedParam: "",
+            weixinJsApiConf: ""
+        }
+    }
+    </script>
+    <script type=text/javascript src=/static/bee/js/www_base.all-2248428e.js>
+    </script>
+    <script type=text/javascript src=/static/bee/js/www_index.all-a07dbf6d.js>
+    </script>
+    <script>
+    try {
+        window.SYS_CONF.addrList = "";
+    } catch (e) {}
+    </script>
+    <script type=text/javascript>
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan id='cnzz_stat_icon_1000492660'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1000492660' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</body>
+
+</html>

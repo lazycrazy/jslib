@@ -1,0 +1,455 @@
+<!DOCTYPE HTML>
+<html lang=en class="platform-iphone platform-mobile platform-m bugfix">
+
+<head>
+    <meta charset=UTF-8>
+    <script type=text/javascript>
+    window.SYS_PERFORMANCE = {
+        pageName: 'show_phone_index.tpl',
+        wxRedirectTime: '',
+        headStart: (new Date) * 1
+    };
+    </script>
+    <meta name=viewport content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name=apple-mobile-web-app-capable content=yes>
+    <meta name=apple-mobile-web-app-status-bar-style content=black-translucent>
+    <meta name=format-detection content="telephone=no">
+    <link rel=apple-touch-icon-precomposed href=/static/bee/img/app_icon-b3fc788d.png>
+    <title>爱鲜蜂</title>
+    <meta name=keywords content=爱鲜蜂,社区O2O,网上外卖,订外卖>
+    <meta name=description content=各种新鲜，闪电送！鲜蜂侠急送,1小时内送货上门,下单后鲜蜂侠火速送上冰饮零食、卤味夜宵~OTO领域的创新企业，专注于社区服务的最后1公里>
+    <script type=text/javascript>
+    window._bee_imgRequest = function(url, onfinish) {
+        var imgId = '_img_request_' + Math.random(),
+            loadFn = function() {
+                delete window[imgId];
+                onfinish && onfinish();
+            };
+        window[imgId] = new Image();
+        window[imgId].onload = loadFn;
+        window[imgId].onerror = loadFn;
+        window[imgId].src = url;
+    };
+    window._bee_sendError = (function() {
+        var msgSended = {};
+        return function(msg, url, line, column, errorObj) {
+            if (msgSended[msg]) return;
+            msgSended[msg] = true;
+            window._bee_imgRequest('http://log.beequick.cn//err.gif?logid=54d22a200768f3685&msg=' + encodeURIComponent(msg) + '&url=' + encodeURIComponent(url) + '&line=' + line + '&column=' + column + '&errorObj=' + encodeURIComponent(JSON.stringify(errorObj)) + '&_r=' + Math.random());
+        }
+    })();
+    window.onerror = function(msg, url, line) {
+        _bee_sendError(msg, url, line);
+        return null;
+    }
+    </script>
+    <link rel=stylesheet href=/static/bee/css/phone_index.all-3601fd53.css>
+</head>
+
+<body class=" bugfix">
+    <script type=text/javascript>
+    window.SYS_PERFORMANCE.bodyStart = (new Date) * 1;
+    if (navigator.standalone) {
+        document.documentElement.className += ' standalone';
+    };
+    </script>
+    <div id=mod-container class="mod-container clearfix">
+        <div id=mod-index class="mod-index pageview pageview-default">
+            <div class=welcome-mask style=background-image:url(/static/bee/img/phone/welcome/20150101.jpg)></div>
+            <div class=logoarea>
+                <div class=logo></div>
+                <div class="location location-node" style=bottom:0px>
+                    <div class=location-blink></div>
+                </div>
+                <div class="location-text location-node">定位中···</div>
+            </div>
+            <table class=welcome>
+                <tr>
+                    <td>各种新鲜闪电送达~
+                        <br/>购物满百免运费</td>
+                </tr>
+            </table>
+        </div>
+        <div id=mod-menu class="mod-menu pageview">
+            <header class=pub-header>
+                <div class=header-content></div>
+                <a class="icon icon-me header-right tap-action" data-tap=me></a>
+            </header>
+            <div class="main main-both main-empty">
+                <div class="list-category iscroll-container ui-graybg" data-iscroll-id=category>
+                    <ul class=list-category-ul></ul>
+                </div>
+                <div class="list-product iscroll-container" data-iscroll-id=product data-onrefresh=productScroll data-onscrollend=productScroll data-onscrollmove=productScroll data-ontouchend=productScrollEnd>
+                    <ul class="list-product-ul mod-pub-product"></ul>
+                    <div class=scroll-next>
+                        <div class=next-progress></div>
+                        <div class=next-word>向上拖动</div>
+                        <div class=next-category>查看 <span class=next-category-name></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pub-cart "><span class="shopping-icon icon icon-cart-inner expand"><span class=shopping-count></span></span>
+                <div class="info expand">
+                    <p class="cart-total shopping-total"></p>
+                    <p class="cart-words shopping-words"></p>
+                </div>
+                <div class="submit shopping-submit tap-action" data-tap=cartOk><span class="submit-text shopping-submit-text"></span>
+                </div>
+            </div>
+        </div>
+        <div id=mod-tag class="mod-tag pageview">
+            <header class=pub-header> <span class="tap-action icon icon-back" data-tap=!back></span>
+                <div class=header-content></div> <span class="header-right header-right-text"></span> </header>
+            <div class="main main-both iscroll-container" data-onrefresh=productScroll data-onscrollend=productScroll data-onscrollmove=productScroll>
+                <ul class="tag-list mod-pub-product"></ul>
+            </div>
+            <div class="pub-cart "><span class="shopping-icon icon icon-cart-inner expand"><span class=shopping-count></span></span>
+                <div class="info expand">
+                    <p class="cart-total shopping-total"></p>
+                    <p class="cart-words shopping-words"></p>
+                </div>
+                <div class="submit shopping-submit tap-action" data-tap=cartOk><span class="submit-text shopping-submit-text"></span>
+                </div>
+            </div>
+        </div>
+        <div id=mod-act class="mod-act pageview">
+            <header class=pub-header> <span class="tap-action icon icon-back" data-tap=!back></span>
+                <div class=header-content></div> <span class="header-right header-right-text"></span> </header>
+            <div class="main main-both"></div>
+            <div class="pub-cart "><span class="shopping-icon icon icon-cart-inner expand"><span class=shopping-count></span></span>
+                <div class="info expand">
+                    <p class="cart-total shopping-total"></p>
+                    <p class="cart-words shopping-words"></p>
+                </div>
+                <div class="submit shopping-submit tap-action" data-tap=cartOk><span class="submit-text shopping-submit-text"></span>
+                </div>
+            </div>
+        </div>
+        <div id=mod-cart class="mod-cart mod-cart pageview">
+            <header class=pub-header> <span class="tap-action icon icon-back" data-tap=!back></span>
+                <div class=header-content>购物车</div> <span class="header-right header-right-text"></span> </header>
+            <div class="main main-both">
+                <div class="receive ui-graybg block">
+                    <div class="addr tap-action" data-tap=selectAddr>地址加载中。。。</div>
+                    <hr>
+                    <div class=time><span class=more><span class=select-time-day></span> <span class=select-time-hour></span></span> 收货时间</div>
+                </div>
+                <div class="list-shopping iscroll-container ui-graybg block" data-iscroll-id=shopping>
+                    <ul class=list-shopping-ul></ul>
+                </div>
+            </div>
+            <div class="pub-cart "><span class="shopping-icon icon icon-cart-inner expand"><span class=shopping-count></span></span>
+                <div class="info expand">
+                    <p class="cart-total shopping-total"></p>
+                    <p class="cart-words shopping-words"></p>
+                </div>
+                <div class="submit shopping-submit tap-action" data-tap=cartOk><span class="submit-text shopping-submit-text"></span>
+                </div>
+            </div>
+        </div>
+        <div id=mod-addrlist class="mod-addrlist pageview">
+            <header class=pub-header> <span class="tap-action icon icon-back" data-tap=!back></span>
+                <div class=header-content>选择收货地址</div> <span class="header-right header-right-text"></span> </header>
+            <div class="main main-top iscroll-container" data-onscrollmove=hideDel>
+                <div>
+                    <ul class=list-addr></ul>
+                    <div class="bigbtn bigbtn-one tap-action" data-tap=edit>新增地址</div>
+                    <br>
+                    <br>
+                </div>
+            </div>
+        </div>
+        <div id=mod-addredit class="mod-addredit pageview">
+            <header class=pub-header> <span class="tap-action icon icon-back" data-tap=!back></span>
+                <div class=header-content>编辑地址</div> <span class="header-right header-right-text">删除</span> </header>
+            <div class="main main-top ui-graybg iscroll-container" data-iscroll-id=content>
+                <div class=content>
+                    <form id=autocomplete-form onsubmit="return false;">
+                        <ul class=edit-ul></ul>
+                        <input type=submit class="bigbtn bigbtn-one" value=保存>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id=mod-confirm class="mod-confirm pageview">
+            <header class=pub-header> <span class="tap-action icon icon-back" data-tap=!back></span>
+                <div class=header-content>结算付款</div> <span class="header-right header-right-text"></span> </header>
+            <div class="main main-top iscroll-container" data-iscroll-id=content>
+                <div class=content></div>
+            </div>
+        </div>
+        <div id=mod-verify class="mod-verify pageview">
+            <header class=pub-header> <span class="tap-action icon icon-back" data-tap=!back></span>
+                <div class=header-content>验证手机</div> <span class="header-right header-right-text"></span> </header>
+            <div class="main main-top">
+                <form id=autocomplete-form onsubmit="return false;">
+                    <div class=pic></div>
+                    <div class=block>
+                        <input name=phone id=autocomplete-phone class="phone login-input-phone login-input" type=tel placeholder=手机号码>
+                        <button class="submit login-send">获取验证码</button>
+                        <hr>
+                        <input type=number class="code login-input-code login-input" placeholder=短信验证码>
+                    </div>
+                    <p class=login-voice-wrap></p>
+                    <input type=button class="bigbtn bigbtn-one login-submit" value=确定>
+                </form>
+            </div>
+        </div>
+        <div id=mod-mine class="mod-mine pageview">
+            <header class=pub-header> <span class="tap-action icon icon-back" data-tap=!back></span>
+                <div class=header-content>我的爱鲜蜂</div> <span class="header-right header-right-text"></span> </header>
+            <div class="main main-top iscroll-container">
+                <div>
+                    <div class=welcome></div>
+                    <div class=me>
+                        <div class=me-photo></div><span class=me-phone></span>
+                    </div>
+                    <div class=mine-block>
+                        <div class="mine-item mine-item-order tap-action" data-tap=itemClick|order><span class=item-icon></span> 我的订单</div>
+                        <hr>
+                        <div class="mine-item mine-item-coupon tap-action" data-tap=itemClick|coupon><span class=item-icon></span> 我的优惠券</div>
+                        <hr>
+                        <div class="mine-item mine-item-address tap-action" data-tap=itemClick|address><span class=item-icon></span> 收货地址</div>
+                    </div>
+                    <div class=mine-block><a class="mine-item mine-item-tel" href=tel:4008484842 title=客服电话><span class=item-icon></span> 400-8484-842</a>
+                    </div>
+                    <div class="bigbtn bigbtn-one tap-action" data-tap=itemClick|logout>退出帐号</div>
+                    <br>
+                </div>
+            </div>
+        </div>
+        <div id=mod-coupon class="mod-coupon pageview">
+            <header class=pub-header> <span class="tap-action icon icon-back" data-tap=!back></span>
+                <div class=header-content>我的优惠券</div> <span class="header-right header-right-text"></span> </header>
+            <div class="main main-top">
+                <div class=coupon-bind>
+                    <form onsubmit="return false;">
+                        <div class=inputwrap>
+                            <input type=text class=inputwrap-input placeholder=请输入要绑定的优惠券号>
+                            <input type=submit class=inputwrap-button value=绑定>
+                        </div>
+                    </form>
+                </div>
+                <div class="coupon-list-wrap iscroll-container">
+                    <ul class=coupon-list></ul>
+                </div>
+            </div>
+        </div>
+        <div id=mod-overlay-mask class=mod-overlay-mask></div>
+        <div id=mod-overlay-cart class="mod-overlay mod-overlay-cart">
+            <div class=cart-detail>
+                <div class="list-wrapper iscroll-container">
+                    <ul class=list-shopping-ul></ul>
+                </div>
+            </div>
+            <div class="pub-cart "><span class="shopping-icon icon icon-cart-inner expand"><span class=shopping-count></span></span>
+                <div class="info expand">
+                    <p class="cart-total shopping-total"></p>
+                    <p class="cart-words shopping-words"></p>
+                </div>
+                <div class="submit shopping-submit tap-action" data-tap=cartOk><span class="submit-text shopping-submit-text"></span>
+                </div>
+            </div>
+        </div>
+        <div id=mod-overlay-addr class="mod-overlay mod-overlay-addr">
+            <div class=content>
+                <form class=addr-form onsubmit="return false;">
+                    <table class=inputset>
+                        <tr>
+                            <td class=city-td>
+                                <select>
+                                    <option>北京市</option>
+                                </select>
+                            </td>
+                            <td class=district-td>
+                                <select>
+                                    <option>选择城区</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan=2>
+                                <div class=inputwrap>
+                                    <input name=address type=input class="inputwrap-input addr-input-detail" placeholder=输入详细配送地址>
+                                    <input type=submit class="inputwrap-button addr-submit" value=确认>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+                <div class=geo><span class="icon icon-location"></span>&nbsp;定位到当前位置</div>
+                <p class=history-text>历史位置</p>
+                <div class="history iscroll-container">
+                    <ul class=history-ul></ul>
+                </div>
+            </div>
+            <header class=pub-header>
+                <div class=header-content>切换位置</div> <span class="header-right header-right-text"></span> </header>
+        </div>
+        <div id=mod-overlay-detail class="mod-overlay mod-overlay-detail">
+            <div class=content>
+                <div class="detail-container iscroll-container">
+                    <div class=detail-content></div>
+                </div>
+                <div class=detail-close>确定</div>
+            </div>
+        </div>
+        <div id=mod-guide-mask class=mod-guide-mask>
+            <div id=mod-guide-img></div>
+        </div>
+    </div>
+    <script type=text/javascript>
+    window.SYS_CONF = {
+        environ: 'online',
+        now: parseInt("1423059488000"),
+        jsNow: (new Date()).getTime(),
+        errno: 0,
+        errmsg: "ok",
+        logid: "54d22a200768f3685",
+        geologid: "h5mb20150204220411L54d22796b131f7675X0431358949281",
+        beeToken: "496aa8947b5ff1e9ebfa569fdf84e6e0",
+        tn: "",
+        tg: "",
+        appName: "bee",
+        isMobile: true,
+        lastAddrId: "",
+        userInfo: {
+            "beeId": "54cdd3e03da1b4650",
+            "authorized": "",
+            "logUid": "54cdd3e03da1b4650"
+        },
+        domain: {
+            "clicklog": "http://log.beequick.cn/",
+            "current": "http://10.157.162.227",
+            "static": "http://www.beequick.cn"
+        },
+        platform: {
+            "apple": true,
+            "ios70": "0",
+            "m": true,
+            "android": false,
+            "ipad": false,
+            "iphone": true,
+            "weibo": false,
+            "weixin": false,
+            "mac": false,
+            "windows": false,
+            "app": false
+        },
+        promotion: {
+            "shoppingCart": {
+                "minPrice": "30"
+            },
+            "minPrice": {
+                "3778": "0",
+                "3780": "0",
+                "3781": "0",
+                "3782": "0",
+                "3783": "0",
+                "3779": "0",
+                "4706": "0",
+                "4704": "0",
+                "5145": "0",
+                "5146": "0",
+                "5147": "0",
+                "5148": "0",
+                "5149": "0",
+                "6104": "0",
+                "6106": "0",
+                "5630": "0",
+                "5629": "0",
+                "5625": "0",
+                "6486": "0",
+                "6487": "0",
+                "6488": "0",
+                "6490": "0",
+                "6491": "0"
+            },
+            "countLimit": {
+                "3778": "1",
+                "3780": "1",
+                "3781": "1",
+                "3782": "1",
+                "3783": "1",
+                "3779": "1",
+                "4706": "1",
+                "4704": "1",
+                "3178": "1",
+                "3179": "1",
+                "5145": "1",
+                "5146": "1",
+                "5147": "1",
+                "5148": "1",
+                "5149": "1",
+                "6104": "1",
+                "6106": "1",
+                "5619": "1",
+                "5620": "1",
+                "5621": "1",
+                "5631": "1",
+                "5622": "1",
+                "5623": "1",
+                "5624": "1",
+                "5916": "1",
+                "5915": "1",
+                "7035": "1",
+                "7034": "1",
+                "5630": "1",
+                "5629": "1",
+                "5625": "1",
+                "6486": "1",
+                "6487": "1",
+                "6488": "1",
+                "6490": "1",
+                "6491": "1"
+            },
+            "hidden": [],
+            "exclusion": {
+                "id": ["3178,3179", "3778,3780,3781,3782,3783,3779,4706,4704", "5145,5146,5147,5148,5149,6104,6106", "5619,5620,5621,5631,5622,5623,5624,5916,5915,7035", "5630,5629,5625,6486,6487,6488,6490,6491"],
+                "brand": ["43,155"]
+            },
+            "timestart": {
+                "minPrice": {
+                    "time": "201409220000",
+                    "timestamp": "1411315200",
+                    "isStart": true
+                },
+                "wxFanxian": {
+                    "time": "201502040000",
+                    "timestamp": "1422979200",
+                    "isStart": true
+                }
+            },
+            "welcome": {
+                "text": "各种新鲜闪电送达~<br/>购物满百免运费",
+                "from": "201409220000"
+            },
+            "welcomeLogo": {
+                "active": true,
+                "canShow": true,
+                "url": "/static/bee/img/phone/welcome/20150101.jpg",
+                "cacheKey": "4927ad5b",
+                "hadCached": true,
+                "geoBottom": "0px"
+            }
+        }
+    }
+    </script>
+    <script type=text/javascript src=/static/bee/js/phone_base.all-625dc2fc.js></script>
+    <script type=text/javascript>
+    try {
+        window.SYS_CONF.addrList = "";
+        window.SYS_CONF.sns = {
+            userId: '',
+            token: '',
+            signedParam: ""
+        }
+    } catch (e) {}
+    </script>
+    <script type=text/javascript src=/static/bee/js/phone_index.all-f53b400d.js></script>
+    <link rel=stylesheet href=/static/bee/css/phone_index.image.all-045052f1.css>
+    <div class=bugfix-ui-node></div>
+</body>
+
+</html>
